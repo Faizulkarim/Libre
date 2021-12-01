@@ -1,0 +1,43 @@
+//
+//  UILabel+FormatStyle.swift
+//  FormatStyle
+//
+//  Created by Hyperlink on 18/07/19.
+//  Copyright © 2019 . All rights reserved.
+//
+
+import UIKit
+
+
+extension FormatStyle where Self: UILabel {
+    
+     @discardableResult func lineSpacing(lineSpacing : CGFloat? = 5, alignment : NSTextAlignment? = nil) -> UILabel {
+        if let text = self.text {
+            
+            var attributedString = NSMutableAttributedString(string: text)
+            
+            var alignMentForText = self.textAlignment
+            
+            if let txtAlignMent = alignment {
+                alignMentForText = txtAlignMent
+            }
+            
+            if let attributedText = self.attributedText {
+                attributedString = NSMutableAttributedString(attributedString: attributedText)
+            }
+            
+            // *** Create instance of `NSMutableParagraphStyle`
+            let paragraphStyle = NSMutableParagraphStyle()
+            // *** set LineSpacing property in points ***
+            paragraphStyle.lineSpacing = lineSpacing! // Whatever line spacing you want in points
+            paragraphStyle.alignment = alignMentForText
+            // *** Apply attribute to string ***
+            attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attributedString.length))
+            // *** Set Attributed String to your label ***
+            self.attributedText = attributedString
+            
+        }
+        
+        return self
+    }
+}
