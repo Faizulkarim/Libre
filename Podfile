@@ -17,6 +17,7 @@ target 'Libre' do
   pod 'MessageKit'
   pod 'Moya', '~> 13.0'
   pod 'AWSS3'
+  pod 'AgoraRtcEngine_iOS'
  
 
   # Pods for Libre

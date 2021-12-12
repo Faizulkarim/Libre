@@ -6,13 +6,13 @@
 //
 
 import UIKit
-import TwilioVideo
+import AgoraRtcKit
 class OngoingCallViewController: UIViewController {
     @IBOutlet weak var backgorundView: UIView!
     @IBOutlet weak var muteButton: UIButton!
     @IBOutlet weak var spekerbutton: UIButton!
     @IBOutlet weak var callend: UIButton!
-    @IBOutlet weak var fontCameraView: UIView!
+    var agoraKit: AgoraRtcEngineKit?
     
     //MARK:- Memory Management Method
     override func didReceiveMemoryWarning() {
@@ -26,7 +26,18 @@ class OngoingCallViewController: UIViewController {
     
     //------------------------------------------------------
     //MARK:- Custom Method
-    
+    func initializeAgoraEngine() {
+           // Initializes AgoraRtcEngineKit
+        agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: AgroraCredintial.AgoraAppId.rawValue, delegate: self)
+        }
+    func joinChannel() {
+         // Replace demoChannel with the channel name that you use to generate the temporary token
+        agoraKit?.joinChannel(byToken: AgroraCredintial.AgoraToken.rawValue, channelId: "Faizul", info:nil, uid:0) {[unowned self] (sid, uid, elapsed) -> Void in
+             //UIApplication.shared.isIdleTimerDisabled = true
+            
+            print(sid)
+         }
+     }
     
     func setupView(){
     
@@ -35,19 +46,15 @@ class OngoingCallViewController: UIViewController {
         self.spekerbutton.roundCorners(corners: .allCorners, radius: 27.5)
         
         self.callend.handleTapToAction {
+            self.agoraKit!.leaveChannel(nil)
+            AgoraRtcEngineKit.destroy()
             self.pushToCallHistoryViewController()
         }
-        self.showFontCameraView()
-    }
-    var localAudioTrack = TVILocalAudioTrack()
+   
 
-    // Create a Capturer to provide content for the video track
-    var localVideoTrack : TVILocalVideoTrack?
-
-    // Create a video track with the capturer.
-    if let camera = TVICameraCapturer(source: .frontCamera) {
-        localVideoTrack = TVILocalVideoTrack.init(capturer: camera)
     }
+
+
     
     func pushToCallHistoryViewController(){
         let vc = CallHistoryViewController.instantiate(fromAppStoryboard: .kTabbarStoryboard)
@@ -55,23 +62,7 @@ class OngoingCallViewController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
         
-        func showFontCameraView(){
-            if let camera = TVICameraCapturer(source: .frontCamera),
-                let videoTrack = TVILocalVideoTrack(capturer: camera) {
 
-                // TVIVideoView is a TVIVideoRenderer and can be added to any TVIVideoTrack.
-                let renderer = TVIVideoView(frame: view.bounds)
-
-                // Add renderer to the video track
-                videoTrack.addRenderer(renderer)
-
-                self.localVideoTrack = videoTrack
-                self.camera = camera
-                self.fontCameraView.addSubview(renderer)
-            } else {
-                print("Couldn't create TVICameraCapturer or TVILocalVideoTrack")
-            }
-        }
     
     
     //------------------------------------------------------
@@ -88,6 +79,8 @@ class OngoingCallViewController: UIViewController {
         super.viewDidLoad()
 
         setupView()
+        initializeAgoraEngine()
+        joinChannel()
         
     }
     
@@ -102,67 +95,38 @@ class OngoingCallViewController: UIViewController {
         super.viewWillDisappear(animated)
     }
     
-    
-    @IBAction func callEnd(_ sender: Any) {
-        let connectOptions = TVIConnectOptions.init(token: accessToken) { (builder) in
-            builder.roomName = "my-room"
-            if let audioTrack = localAudioTrack {
-                builder.audioTracks = [ audioTrack ]
-            }
-            if let videoTrack = localVideoTrack {
-                builder.videoTracks = [ videoTrack ]
-            }
+    @IBAction func mute(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        agoraKit!.muteLocalAudioStream(sender.isSelected)
+        if sender.isSelected {
+            self.muteButton.backgroundColor = UIColor.ColorTheme
+        }else{
+            self.muteButton.backgroundColor = UIColor.white.withAlphaComponent(0.19)
+           
         }
-        room = TwilioVideo.connect(with: connectOptions, delegate: self)
     }
     
-    // MARK: TVIRoomDelegate
-
-    func didConnectToRoom(room: TVIRoom) {
-        print("Did connect to Room")
-        if let localParticipant = room.localParticipant {
-            print("Local identity \(localParticipant.identity)")
+    @IBAction func loudSpeaker(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        self.agoraKit?.setEnableSpeakerphone(sender.isSelected)
+        if sender.isSelected {
+            self.spekerbutton.backgroundColor = UIColor.ColorTheme
+        }else{
+            self.spekerbutton.backgroundColor = UIColor.white.withAlphaComponent(0.19)
+           
         }
-
-        // Connected participants
-        let participants = room.participants;
-        print("Number of connected Participants \(participants.count)")
-        
-        
-    }
-    func room(_ room: TVIRoom, participantDidConnect participant: TVIRemoteParticipant) {
-        participant.delegate = self
-        print ("Participant \(participant.identity) has joined Room \(room.name)")
-    }
-
-    func room(_ room: TVIRoom, participantDidDisconnect participant: TVIRemoteParticipant) {
-        print ("Participant \(participant.identity) has left Room \(room.name)")
     }
     
-    // MARK: TVIParticipantDelegate
-
-    /*
-     * In the Participant Delegate, we can respond when the Participant adds a Video
-     * Track by rendering it on screen.
-     */
-    func participant(_ participant: TVIParticipant, addedVideoTrack videoTrack: TVIVideoTrack) {
-        print("Participant \(participant.identity) added video track")
-
-        self.remoteView = TVIVideoView(frame: self.view.bounds, delegate: self)
-        videoTrack.addRenderer(self.remoteView)
-
-        self.view.addSubview(self.remoteView!)
-    }
-
-    // MARK: TVIVideoViewDelegate
-
-    // Lastly, we can subscribe to important events on the VideoView
-    func videoView(_ view: TVIVideoView, videoDimensionsDidChange dimensions: CMVideoDimensions) {
-        print("The dimensions of the video track changed to: \(dimensions.width)x\(dimensions.height)")
-        self.view.setNeedsLayout()
-    }
-    
-    
-
-
 }
+extension OngoingCallViewController: AgoraRtcEngineDelegate {
+    // This callback is triggered when a remote user joins the channel
+    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
+
+        print("This is other UID:\(uid)")
+    }
+    func rtcEngine(_ engine: AgoraRtcEngineKit, didLeaveChannelWith stats: AgoraChannelStats) {
+        
+        print(stats)
+    }
+}
+

@@ -70,7 +70,6 @@
 		15EEC73426B339820080FA58 /* Agatho_ Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 15EEC73326B339820080FA58 /* Agatho_ Light.otf */; };
 		15EEC73626B339F90080FA58 /* Agatho_ Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 15EEC73526B339900080FA58 /* Agatho_ Medium.otf */; };
 		15EEC73826B3F9A20080FA58 /* chatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EEC73726B3F9A20080FA58 /* chatViewController.swift */; };
-		15EEC73A26B444380080FA58 /* OngoingCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EEC73926B444380080FA58 /* OngoingCallViewController.swift */; };
 		15EEC73C26B453F20080FA58 /* UIAlertViewControllerStyle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EEC73B26B453F20080FA58 /* UIAlertViewControllerStyle+Extension.swift */; };
 		15EEC73E26B46DCC0080FA58 /* CallHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EEC73D26B46DCC0080FA58 /* CallHistoryViewController.swift */; };
 		15EEC74026B479890080FA58 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EEC73F26B479890080FA58 /* ReportViewController.swift */; };
@@ -103,6 +102,8 @@
 		5C424BF526D264430006AE12 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C424BF426D264430006AE12 /* UserModel.swift */; };
 		5C428A9726D7FE67004ED476 /* ImageUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C428A9626D7FE67004ED476 /* ImageUpload.swift */; };
 		5C42FAD526F73C9800D0AFCB /* OtherUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C42FAD426F73C9800D0AFCB /* OtherUserModel.swift */; };
+		5C4E2DFA27667C6C002A4025 /* OngoingCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4E2DF927667C6C002A4025 /* OngoingCallViewController.swift */; };
+		5C4E2DFC27667C77002A4025 /* OngoinVideoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4E2DFB27667C77002A4025 /* OngoinVideoController.swift */; };
 		5C6882B226E673A500EEDE6C /* NearbyPeople.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6882B126E673A500EEDE6C /* NearbyPeople.swift */; };
 		5CB70E7F26DD538700BD037A /* prefaranceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB70E7E26DD538700BD037A /* prefaranceModel.swift */; };
 		5CD1E13526DED40700E8B160 /* GAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD1E13426DED40700E8B160 /* GAPI.swift */; };
@@ -184,7 +185,6 @@
 		15EEC73326B339820080FA58 /* Agatho_ Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Agatho_ Light.otf"; sourceTree = "<group>"; };
 		15EEC73526B339900080FA58 /* Agatho_ Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Agatho_ Medium.otf"; sourceTree = "<group>"; };
 		15EEC73726B3F9A20080FA58 /* chatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chatViewController.swift; sourceTree = "<group>"; };
-		15EEC73926B444380080FA58 /* OngoingCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OngoingCallViewController.swift; sourceTree = "<group>"; };
 		15EEC73B26B453F20080FA58 /* UIAlertViewControllerStyle+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertViewControllerStyle+Extension.swift"; sourceTree = "<group>"; };
 		15EEC73D26B46DCC0080FA58 /* CallHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallHistoryViewController.swift; sourceTree = "<group>"; };
 		15EEC73F26B479890080FA58 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
@@ -219,6 +219,8 @@
 		5C424BF426D264430006AE12 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		5C428A9626D7FE67004ED476 /* ImageUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUpload.swift; sourceTree = "<group>"; };
 		5C42FAD426F73C9800D0AFCB /* OtherUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserModel.swift; sourceTree = "<group>"; };
+		5C4E2DF927667C6C002A4025 /* OngoingCallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OngoingCallViewController.swift; sourceTree = "<group>"; };
+		5C4E2DFB27667C77002A4025 /* OngoinVideoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OngoinVideoController.swift; sourceTree = "<group>"; };
 		5C6882B126E673A500EEDE6C /* NearbyPeople.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyPeople.swift; sourceTree = "<group>"; };
 		5CB70E7E26DD538700BD037A /* prefaranceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = prefaranceModel.swift; sourceTree = "<group>"; };
 		5CBE629726E1182F008F5EC4 /* Libre.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Libre.entitlements; sourceTree = "<group>"; };
@@ -461,7 +463,8 @@
 				15EEC72B26B30E8B0080FA58 /* LocalViewController.swift */,
 				15EEC72D26B30EB00080FA58 /* InboxViewController.swift */,
 				15EEC73726B3F9A20080FA58 /* chatViewController.swift */,
-				15EEC73926B444380080FA58 /* OngoingCallViewController.swift */,
+				5C4E2DF927667C6C002A4025 /* OngoingCallViewController.swift */,
+				5C4E2DFB27667C77002A4025 /* OngoinVideoController.swift */,
 				15EEC73D26B46DCC0080FA58 /* CallHistoryViewController.swift */,
 				15EEC73F26B479890080FA58 /* ReportViewController.swift */,
 				15EEC74226B482C10080FA58 /* OtheruserProfileViewController.swift */,
@@ -763,6 +766,7 @@
 				15765B2526B0B3D00050CF40 /* UIViewController+Extension.swift in Sources */,
 				157C4C8D26B1F5F4007F6708 /* AboutYouViewController.swift in Sources */,
 				5C428A9726D7FE67004ED476 /* ImageUpload.swift in Sources */,
+				5C4E2DFC27667C77002A4025 /* OngoinVideoController.swift in Sources */,
 				15765A9526B06DA20050CF40 /* ChooseInterestViewController.swift in Sources */,
 				15765B6826B1E8FD0050CF40 /* ChooseBackgroundViewController.swift in Sources */,
 				15765B5726B15CAF0050CF40 /* Nsobject+FormatStyle.swift in Sources */,
@@ -777,7 +781,6 @@
 				15EEC74326B482C10080FA58 /* OtheruserProfileViewController.swift in Sources */,
 				5C25663026D168D40037C8F2 /* ApiKeys.swift in Sources */,
 				15765B4D26B157490050CF40 /* GEnum.swift in Sources */,
-				15EEC73A26B444380080FA58 /* OngoingCallViewController.swift in Sources */,
 				15EEC74026B479890080FA58 /* ReportViewController.swift in Sources */,
 				157C4C9326B1FC46007F6708 /* SetNewpasswordViewController.swift in Sources */,
 				15765B6226B199700050CF40 /* LocationManager.swift in Sources */,
@@ -824,6 +827,7 @@
 				5C6882B226E673A500EEDE6C /* NearbyPeople.swift in Sources */,
 				15765B4F26B159280050CF40 /* NSObject+Extension.swift in Sources */,
 				1599682026B2A50C0031483E /* UINavigationController+Extension.swift in Sources */,
+				5C4E2DFA27667C6C002A4025 /* OngoingCallViewController.swift in Sources */,
 				15EEC73C26B453F20080FA58 /* UIAlertViewControllerStyle+Extension.swift in Sources */,
 				15765B6026B198660050CF40 /* DistanceViewController.swift in Sources */,
 				5C25664526D170E40037C8F2 /* GradientLoadingBarViewModel.swift in Sources */,

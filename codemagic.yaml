@@ -1,0 +1,12 @@
+workflows:
+  Libre-workflow:
+    name: Libry pipline
+    scripts:
+      - name: CICD started
+        script:  echo "setup done"
+      - name: Build Libre
+        script: - xcodebuild build -workspace "Libre.xcworkspace" -scheme "Libre" CODE_SIGN_INDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+    publishing:
+        email:
+           recipients:
+               - faizulkarim28@gmail.com
