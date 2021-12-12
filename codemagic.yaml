@@ -3,8 +3,7 @@ workflows:
     name: Libry pipline
     scripts:
       - name: Install CocoaPods dependencies
-            script: |
-                  pod install
+        script: pod install
       - name: CICD started
         script:  echo "setup done"
       - name: Build Libre
