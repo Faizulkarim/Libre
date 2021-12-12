@@ -2,6 +2,9 @@ workflows:
   Libre-workflow:
     name: Libry pipline
     scripts:
+      - name: Install CocoaPods dependencies
+            script: |
+                  pod install
       - name: CICD started
         script:  echo "setup done"
       - name: Build Libre
@@ -10,3 +13,7 @@ workflows:
         email:
            recipients:
                - faizulkarim28@gmail.com
+    artifacts:
+            - /tmp/xcodebuild_logs/*.log
+            - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+            - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
