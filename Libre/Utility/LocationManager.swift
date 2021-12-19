@@ -48,7 +48,6 @@ class LocationManager: NSObject , CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         location = locations[0].coordinate
-       print("Lat :",location.latitude , ", Long : " , location.longitude)
         
         let newLocation : [String : CLLocationCoordinate2D] = ["location" : location]
         NotificationCenter.default.post(name: NSNotification.Name(rawValue:"LocationChange"), object: nil, userInfo: newLocation)

@@ -18,6 +18,7 @@ target 'Libre' do
   pod 'Moya', '~> 13.0'
   pod 'AWSS3'
   pod 'AgoraRtcEngine_iOS'
+  pod 'AgoraRtm_iOS'
  
 
   # Pods for Libre

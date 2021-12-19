@@ -24,6 +24,9 @@ enum CustomFont : String {
 //    case Tarja_Pro3_regular                   = "trajan-pro-3"
 }
 
+struct myCallId {
+   static var callId = 0
+}
 struct Platform {
     static let isSimulator: Bool = {
         var isSim = false
@@ -49,6 +52,7 @@ enum UserDefaultsKeys : String {
     case kIsLogin                               = "kIsLogin"
     case kSignUpUserData                        = "kSignUpUserData"
     case kDeviceToken                           = "kDeviceToken"
+    case kVoipToken                             = "kVoipToken"
     case kMobilenumber                          = "kMobileNumber"
     case kPassword                              = "kPassword"
 
@@ -176,11 +180,11 @@ enum NotificationTag : String {
     case orderRequestpickup           = "order_request_pickup"
     case updateProductrice            = "update_product_price"
 }
-
-enum PrefixPostfix : String {
-    case currencySymbol     = "KD "
-    case durationPostfix    = " min"
+enum AgroraCredintial : String {
+    case AgoraAppId = "52eaf51aa1d24ec0a9fcbd06155dec52"
+    case AgoraToken = "00652eaf51aa1d24ec0a9fcbd06155dec52IACQpT3gR0Nsg742JJ7vWePErUWRG0oNR9WI3+kfaZZa69bmOcIAAAAAEADri2/Q2I3AYQEAAQDZjcBh"
 }
+
 
 enum SignUpStep : String {
     
@@ -192,14 +196,4 @@ enum OTPScreenFor {
     case login, signup
 }
 
-enum signupType {
-    case Normal, Facebook, Google, Apple
-}
 
-enum executeType {
-    case Apple, Direct, Other
-}
-
-enum HouseType {
-    case House, Apartment, Office
-}

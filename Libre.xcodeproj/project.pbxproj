@@ -99,11 +99,17 @@
 		5C25664826D170E40037C8F2 /* UIColor+Initializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25664026D170E40037C8F2 /* UIColor+Initializers.swift */; };
 		5C25664926D170E40037C8F2 /* NotificationCenter+ObserveOnce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25664226D170E40037C8F2 /* NotificationCenter+ObserveOnce.swift */; };
 		5C25664A26D170E40037C8F2 /* Durations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C25664426D170E40037C8F2 /* Durations.swift */; };
+		5C29FD392767C6C800AB92D1 /* ATCallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C29FD382767C6C800AB92D1 /* ATCallManager.swift */; };
 		5C424BF526D264430006AE12 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C424BF426D264430006AE12 /* UserModel.swift */; };
 		5C428A9726D7FE67004ED476 /* ImageUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C428A9626D7FE67004ED476 /* ImageUpload.swift */; };
 		5C42FAD526F73C9800D0AFCB /* OtherUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C42FAD426F73C9800D0AFCB /* OtherUserModel.swift */; };
 		5C4E2DFA27667C6C002A4025 /* OngoingCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4E2DF927667C6C002A4025 /* OngoingCallViewController.swift */; };
 		5C4E2DFC27667C77002A4025 /* OngoinVideoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4E2DFB27667C77002A4025 /* OngoinVideoController.swift */; };
+		5C5A9712276A351C00B303CB /* communicationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5A9711276A351C00B303CB /* communicationManager.swift */; };
+		5C5A9714276A356700B303CB /* call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5A9713276A356700B303CB /* call.swift */; };
+		5C5A9716276A35BB00B303CB /* CallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5A9715276A35BB00B303CB /* CallManager.swift */; };
+		5C5A9718276A364500B303CB /* ProviderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5A9717276A364500B303CB /* ProviderDelegate.swift */; };
+		5C5A971A276A4CAF00B303CB /* music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5C5A9719276A4CAF00B303CB /* music.mp3 */; };
 		5C6882B226E673A500EEDE6C /* NearbyPeople.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6882B126E673A500EEDE6C /* NearbyPeople.swift */; };
 		5CB70E7F26DD538700BD037A /* prefaranceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB70E7E26DD538700BD037A /* prefaranceModel.swift */; };
 		5CD1E13526DED40700E8B160 /* GAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD1E13426DED40700E8B160 /* GAPI.swift */; };
@@ -216,11 +222,17 @@
 		5C25664026D170E40037C8F2 /* UIColor+Initializers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Initializers.swift"; sourceTree = "<group>"; };
 		5C25664226D170E40037C8F2 /* NotificationCenter+ObserveOnce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+ObserveOnce.swift"; sourceTree = "<group>"; };
 		5C25664426D170E40037C8F2 /* Durations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Durations.swift; sourceTree = "<group>"; };
+		5C29FD382767C6C800AB92D1 /* ATCallManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ATCallManager.swift; sourceTree = "<group>"; };
 		5C424BF426D264430006AE12 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		5C428A9626D7FE67004ED476 /* ImageUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUpload.swift; sourceTree = "<group>"; };
 		5C42FAD426F73C9800D0AFCB /* OtherUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserModel.swift; sourceTree = "<group>"; };
 		5C4E2DF927667C6C002A4025 /* OngoingCallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OngoingCallViewController.swift; sourceTree = "<group>"; };
 		5C4E2DFB27667C77002A4025 /* OngoinVideoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OngoinVideoController.swift; sourceTree = "<group>"; };
+		5C5A9711276A351C00B303CB /* communicationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = communicationManager.swift; sourceTree = "<group>"; };
+		5C5A9713276A356700B303CB /* call.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = call.swift; sourceTree = "<group>"; };
+		5C5A9715276A35BB00B303CB /* CallManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallManager.swift; sourceTree = "<group>"; };
+		5C5A9717276A364500B303CB /* ProviderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderDelegate.swift; sourceTree = "<group>"; };
+		5C5A9719276A4CAF00B303CB /* music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = music.mp3; sourceTree = "<group>"; };
 		5C6882B126E673A500EEDE6C /* NearbyPeople.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyPeople.swift; sourceTree = "<group>"; };
 		5CB70E7E26DD538700BD037A /* prefaranceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = prefaranceModel.swift; sourceTree = "<group>"; };
 		5CBE629726E1182F008F5EC4 /* Libre.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Libre.entitlements; sourceTree = "<group>"; };
@@ -320,6 +332,7 @@
 		1571EAB526AACC5D003DBD12 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				5C5A9719276A4CAF00B303CB /* music.mp3 */,
 				15B82A6126ADCA4D00F6BA70 /* Font */,
 				1571EAA926AACBA5003DBD12 /* Assets.xcassets */,
 				157C32E626AD9948000D87D4 /* Color.xcassets */,
@@ -360,6 +373,7 @@
 				1599682126B2BE230031483E /* String+Extension.swift */,
 				1599681726B29FAD0031483E /* GFunction.swift */,
 				15765B6126B1996F0050CF40 /* LocationManager.swift */,
+				5C29FD382767C6C800AB92D1 /* ATCallManager.swift */,
 				15765B4A26B157200050CF40 /* UIFont+Extension.swift */,
 				1599681F26B2A50C0031483E /* UINavigationController+Extension.swift */,
 				5CD1E13426DED40700E8B160 /* GAPI.swift */,
@@ -460,6 +474,7 @@
 		15EEC72A26B30E6C0080FA58 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				5C5A9710276A34F500B303CB /* call */,
 				15EEC72B26B30E8B0080FA58 /* LocalViewController.swift */,
 				15EEC72D26B30EB00080FA58 /* InboxViewController.swift */,
 				15EEC73726B3F9A20080FA58 /* chatViewController.swift */,
@@ -584,6 +599,17 @@
 			path = userData;
 			sourceTree = "<group>";
 		};
+		5C5A9710276A34F500B303CB /* call */ = {
+			isa = PBXGroup;
+			children = (
+				5C5A9711276A351C00B303CB /* communicationManager.swift */,
+				5C5A9713276A356700B303CB /* call.swift */,
+				5C5A9715276A35BB00B303CB /* CallManager.swift */,
+				5C5A9717276A364500B303CB /* ProviderDelegate.swift */,
+			);
+			path = call;
+			sourceTree = "<group>";
+		};
 		5C6882B026E6739200EEDE6C /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -676,6 +702,7 @@
 				1571EAAD26AACBA5003DBD12 /* LaunchScreen.storyboard in Resources */,
 				15B82A6326ADCA7C00F6BA70 /* Proxima Nova Font.otf in Resources */,
 				5CDAB72426D97BE000528116 /* Inter-ExtraBold.ttf in Resources */,
+				5C5A971A276A4CAF00B303CB /* music.mp3 in Resources */,
 				157C32E726AD9948000D87D4 /* Color.xcassets in Resources */,
 				15EEC73226B339770080FA58 /* Agatho_ Bold.otf in Resources */,
 				150FE4FE26AF003600D16681 /* trajan-pro-3.otf in Resources */,
@@ -777,7 +804,9 @@
 				5C25663326D168D40037C8F2 /* ApiHelper.swift in Sources */,
 				15765B3F26B1458E0050CF40 /* UILabel+Extension.swift in Sources */,
 				1571EAA126AACBA3003DBD12 /* AppDelegate.swift in Sources */,
+				5C5A9714276A356700B303CB /* call.swift in Sources */,
 				15EEC72726B306FB0080FA58 /* TabbarMainVC.swift in Sources */,
+				5C29FD392767C6C800AB92D1 /* ATCallManager.swift in Sources */,
 				15EEC74326B482C10080FA58 /* OtheruserProfileViewController.swift in Sources */,
 				5C25663026D168D40037C8F2 /* ApiKeys.swift in Sources */,
 				15765B4D26B157490050CF40 /* GEnum.swift in Sources */,
@@ -785,6 +814,7 @@
 				157C4C9326B1FC46007F6708 /* SetNewpasswordViewController.swift in Sources */,
 				15765B6226B199700050CF40 /* LocationManager.swift in Sources */,
 				15EEC75D26B7206E0080FA58 /* SettingViewController.swift in Sources */,
+				5C5A9716276A35BB00B303CB /* CallManager.swift in Sources */,
 				15765B6A26B1EEAB0050CF40 /* BackgroundPreviewViewController.swift in Sources */,
 				15EEC73826B3F9A20080FA58 /* chatViewController.swift in Sources */,
 				15765B3326B0B3D00050CF40 /* UIView+Extension.swift in Sources */,
@@ -813,6 +843,7 @@
 				5CB70E7F26DD538700BD037A /* prefaranceModel.swift in Sources */,
 				15EEC73026B30EC40080FA58 /* ProfileViewController.swift in Sources */,
 				15765A9926B0A0E20050CF40 /* ScreenNameViewController.swift in Sources */,
+				5C5A9712276A351C00B303CB /* communicationManager.swift in Sources */,
 				157C4C9126B1FC25007F6708 /* OtpVerificationViewController.swift in Sources */,
 				15EEC74A26B5A8B90080FA58 /* myPhotosViewController.swift in Sources */,
 				15765B4726B14EFF0050CF40 /* FaceConstructViewController.swift in Sources */,
@@ -822,6 +853,7 @@
 				15765B5C26B15DB50050CF40 /* SwiftyJSON.swift in Sources */,
 				15EEC76326B7F3BB0080FA58 /* premiumViewController.swift in Sources */,
 				15765B6426B1D7380050CF40 /* ProfessonViewController.swift in Sources */,
+				5C5A9718276A364500B303CB /* ProviderDelegate.swift in Sources */,
 				5C424BF526D264430006AE12 /* UserModel.swift in Sources */,
 				15765B5826B15CAF0050CF40 /* FormatStyle.swift in Sources */,
 				5C6882B226E673A500EEDE6C /* NearbyPeople.swift in Sources */,

@@ -109,6 +109,11 @@ class ProfileViewController: UIViewController,UIScrollViewDelegate {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.setGradientBackground(colors: [UIColor.colorFromHex(hex: 0x2F8DBF), UIColor.colorFromHex(hex: 0x2968B1)])
         self.showTabBar()
+        setupData()
+        self.APICallGetProfile()
+    }
+    
+    func setupData(){
         if UserModel.currentUser != nil{
 
             self.profession.text = UserModel.currentUser?.professon.capitalized
@@ -129,10 +134,6 @@ class ProfileViewController: UIViewController,UIScrollViewDelegate {
             }
 //            self.prefarence.text = UserModel.currentUser?.
         }
-
-        APICallGetmyImage()
-      
-
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -153,12 +154,17 @@ extension ProfileViewController : UICollectionViewDelegate, UICollectionViewData
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? userprofilePhotosCell
         if let url = URL(string: Images[indexPath.row].rawValue as! String){
             cell?.otheUserImage.setImageWithDownload(url)
+            cell?.otheUserImage.tapToZoom()
         }
         
         return cell!
     }
     
 
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        
+    }
   
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -192,14 +198,11 @@ extension ProfileViewController {
         ]
         print(params)
         
-        ApiManager.shared.makeRequestWithModel(method: .user(.userProfile), modelType: UserModel.self, parameter: params)  { (result) in
+        ApiManager.shared.makeRequestWithModel(method: .user(.userProfile), modelType: UserModel.self, parameter: params, withLoader: false)  { (result) in
             switch result {
             case .success(let apiData):
                 print(result)
                 switch apiData.apiCode {
-                    
-                
-              
                 case .success:
                     print(apiData)
                     self.APICallGetmyImage()
@@ -222,7 +225,7 @@ extension ProfileViewController {
         ]
         print(params)
         
-        ApiManager.shared.makeRequest(method:.user(.getuserImages), methodType: .post, parameter: params, withErrorAlert: true, withLoader: true, withdebugLog: true) { (result) in
+        ApiManager.shared.makeRequest(method:.user(.getuserImages), methodType: .post, parameter: params, withErrorAlert: true, withLoader: false, withdebugLog: true) { (result) in
             
             switch result {
             case .success(let apiData):

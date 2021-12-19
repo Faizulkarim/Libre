@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 class otherImageCell : UICollectionViewCell {
     @IBOutlet weak var otheUserImage: UIImageView!
     
@@ -37,7 +36,7 @@ class OtheruserProfileViewController: UIViewController,UIScrollViewDelegate {
     var isMoreViewOpen = false
     var userId = ""
     var otheruser: OtherUserModel?
-    
+    var Images : [JSON] = []
     //MARK:- Memory Management Method
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -51,49 +50,80 @@ class OtheruserProfileViewController: UIViewController,UIScrollViewDelegate {
     //------------------------------------------------------
     //MARK:- Custom Method
     
-    
     func setupView(){
         self.aboutTextBack.addBlurEffect()
-        self.scrollView.contentInset = UIEdgeInsets(top: 240, left: 0, bottom: 0, right: 0)
+        self.scrollView.contentInset = UIEdgeInsets(top: 270, left: 0, bottom: 0, right: 0)
         self.scrollView.delegate = self
         self.otherPhotosCollection.delegate = self
         self.moreViewHeightconstraint.constant = 0
         self.moreView.isHidden = true
+
+         
     }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
-        let y = 200 - (scrollView.contentOffset.y + 240)
-        let h = max(100, y)
+        let y = 270 - (scrollView.contentOffset.y + 270)
+        let h = max(50, y)
         let react = CGRect(x: 0, y: 0, width: view.bounds.width, height: h)
         topView.frame = react
 
         
         if y < 80 {
+            print("les thay \(y)")
 
         }else {
+
+          
+            
             print(y)
           
         }
     }
+
     
     func pushToChatVc(){
         let vc = chatViewController.instantiate(fromAppStoryboard: .kTabbarStoryboard)
       
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    func pushToCallViewController(){
+    func pushToAutdioCallViewController(){
         let vc = OngoingCallViewController.instantiate(fromAppStoryboard: .kTabbarStoryboard)
-      
+            vc.recipientId = self.userId
+        vc.recipientName = otheruser?.name ?? ""
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    func pushToVideoCallViewController(){
+        let vc = OngoinVideoController.instantiate(fromAppStoryboard: .kTabbarStoryboard)
+            vc.recipientId = self.userId
+        vc.recipientName = otheruser?.name ?? ""
         self.navigationController?.pushViewController(vc, animated: true)
     }
     func pushToReportViewController(){
         let vc = ReportViewController.instantiate(fromAppStoryboard: .kTabbarStoryboard)
-      
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func setupData(){
-        
+        if otheruser != nil{
+
+            self.profession.text = otheruser!.professon.capitalized
+            self.about.text = otheruser!.aboutYou
+            self.prefarence.text = otheruser!.prefarance
+            self.Name.text = otheruser!.name.capitalized
+            if let url = URL(string: (otheruser!.profileImage)!){
+                print(url)
+                self.profileImage.setImageWithDownload(url)
+               
+                
+            }
+            if let urlBack = URL(string: (UserModel.currentUser?.backgrounImage)!){
+   
+                self.otherBackground.setImageWithDownload(urlBack)
+                
+                self.backgroundImage.setImageWithDownload(urlBack)
+            }
+//            self.prefarence.text = UserModel.currentUser?.
+        }
     }
     
 
@@ -123,10 +153,10 @@ class OtheruserProfileViewController: UIViewController,UIScrollViewDelegate {
     }
     
     @IBAction func audioCa(_ sender: Any) {
-        self.pushToCallViewController()
+        self.pushToAutdioCallViewController()
     }
     @IBAction func videoCall(_ sender: Any) {
-        self.pushToCallViewController()
+        self.pushToVideoCallViewController()
     }
     
     @IBAction func reportUser(_ sender: Any) {
@@ -138,7 +168,6 @@ class OtheruserProfileViewController: UIViewController,UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setupView()
         
     }
@@ -148,6 +177,21 @@ class OtheruserProfileViewController: UIViewController,UIScrollViewDelegate {
         self.navigationController?.navigationBar.setGradientBackground(colors: [UIColor.colorFromHex(hex: 0x2F8DBF), UIColor.colorFromHex(hex: 0x2968B1)])
         self.navigationController?.navigationBar.isHidden = false
         self.hideTabBar()
+        if otheruser != nil {
+            if otheruser?.userId != Int(self.userId) {
+                self.APICallGetProfile(userId: self.userId)
+                self.APICallGetmyImage(userId: self.userId)
+            }else{
+                self.setupData()
+            }
+        }else{
+            self.APICallGetProfile(userId: self.userId)
+            self.APICallGetmyImage(userId: self.userId)
+        }
+        
+        //
+        
+       
 
     }
     
@@ -161,13 +205,16 @@ class OtheruserProfileViewController: UIViewController,UIScrollViewDelegate {
 extension OtheruserProfileViewController : UICollectionViewDelegate, UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return 30
+        return Images.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? otherImageCell
-        
+        if let url = URL(string: Images[indexPath.row].rawValue as! String){
+            cell?.otheUserImage.setImageWithDownload(url)
+            cell?.otheUserImage.tapToZoom()
+        }
         
         return cell!
     }
@@ -194,35 +241,63 @@ extension OtheruserProfileViewController : UICollectionViewDelegate, UICollectio
 }
 
 extension OtheruserProfileViewController {
-    private func APICallGetProfile(userId : String) {
-        
-        let params : [String : Any] = [
-            "userId": userId
-   
-        ]
-        print(params)
-        
-        ApiManager.shared.makeRequest(method: .user(.userProfile), methodType: .post, parameter: params, withErrorAlert: true, withLoader: true) { (result) in
-            switch result {
-            case .success(let apiData):
-                print(result)
-                switch apiData.apiCode {
-                    
-                
-              
-                case .success:
-                    print(apiData)
-                    self.otheruser = OtherUserModel.init(fromJson: apiData.data)
+    private func APICallGetProfile(userId: String) {
+            
+            let params : [String : Any] = [
+                "userId": userId
 
+            ]
+            print(params)
+            
+            ApiManager.shared.makeRequestWithModel(method: .user(.userProfile), modelType: OtherUserModel.self, parameter: params)  { (result) in
+                switch result {
+                case .success(let apiData):
+                    print(result)
+                    switch apiData.apiCode {
+                    case .success:
+                        print(apiData)
+                        self.otheruser = apiData.data
+                        self.setupData()
+                    default:
+                        GFunction.shared.showSnackBar(apiData.message)
+                    }
                     
-                default:
-                    GFunction.shared.showSnackBar(apiData.message)
+                case .failure(let failedMsg):
+                    print(failedMsg)
+                    break
                 }
-                
-            case .failure(let failedMsg):
-                print(failedMsg)
-                break
             }
         }
-    }
+        private func APICallGetmyImage(userId: String) {
+            
+            let params : [String : Any] = [
+                "userId": userId
+
+            ]
+            print(params)
+            
+            ApiManager.shared.makeRequest(method:.user(.getuserImages), methodType: .post, parameter: params, withErrorAlert: true, withLoader: true, withdebugLog: true) { (result) in
+                
+                switch result {
+                case .success(let apiData):
+                    print(result)
+                    switch apiData.apiCode {
+                    case .success:
+                         let response = apiData.response
+                        if let data = response["images"].array{
+                            self.Images = data
+                            self.otherPhotosCollection.reloadData()
+                        }
+                        print(apiData)
+                    default:
+                        GFunction.shared.showSnackBar(apiData.message)
+                    }
+                    
+                case .failure(let failedMsg):
+                    print(failedMsg)
+                    break
+                }
+            }
+        }
+    
 }

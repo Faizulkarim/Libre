@@ -71,7 +71,8 @@ class chatViewController: MessagesViewController, MessagesDataSource,MessagesLay
             }
         }
         self.videoCall.handleTapToAction {
-            self.pushToCallViewController()
+            ATCallManager.shared.incommingCall(from: "Faizul")
+           // self.pushToCallViewController()
         }
         self.photoRequest.handleTapToAction {
             self.toggleView.isHidden = true

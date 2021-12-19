@@ -36,6 +36,8 @@ enum User : String {
     case updateDeviceToken                    = "updateDeviceToken"
     case peopleNerarby                        = "getUserByLocation"
     case deleteImage                          = "deleteImage"
+    case pushaCall                            = "makeCall"
+    case callStatus                           = "callStatus"
   
 }
 

@@ -26,11 +26,12 @@ class GlobalAPI : NSObject {
            "userId": UserModel.currentUser?.userId! as Any,
            "latitude" : LocationManager.shared.location.latitude.description,
            "longitude": LocationManager.shared.location.longitude.description,
-           "device_token" : "4389324956926396263"
+           "voip_token" : GFunction.shared.getStringValueForKey(UserDefaultsKeys.kVoipToken.rawValue),
+           "device_token" : GFunction.shared.getStringValueForKey(UserDefaultsKeys.kDeviceToken.rawValue)
        ]
        print(params)
        
-       ApiManager.shared.makeRequest(method:.user(.updateDeviceToken), methodType: .post, parameter: params, withErrorAlert: true, withLoader: true, withdebugLog: true) { (result) in
+       ApiManager.shared.makeRequest(method:.user(.updateDeviceToken), methodType: .post, parameter: params, withErrorAlert: true, withLoader: false, withdebugLog: true) { (result) in
            
         print(result)
            switch result {
@@ -50,6 +51,37 @@ class GlobalAPI : NSObject {
        }
    }
     
-   
+
+    /// Mark:- Api call status changes
+    ///
+    ///
+     func APICallStatusChange(status: Int, completion: @escaping (Bool) -> Void){
+        let params : [String: Any] = [
+            "callId" : myCallId.callId,
+            "status" : status,
+            "userId" : UserModel.currentUser?.userId! as Any
+        ]
+        
+        print(params)
+        
+         ApiManager.shared.makeRequest(method:.user(.callStatus),methodType: .post, parameter: params, withLoader: false) { (result) in
+            switch result {
+            case .success(let apiData):
+                print(result)
+                switch apiData.apiCode {
+                case .success:
+                    let response = apiData.response
+                    completion(true)
+                    print(response)
+                default:
+                    GFunction.shared.showSnackBar(apiData.message)
+                }
+                
+            case .failure(let failedMsg):
+                print(failedMsg)
+                break
+            }
+        }
+    }
     
 }

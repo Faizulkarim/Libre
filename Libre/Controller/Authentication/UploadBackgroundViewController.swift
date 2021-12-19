@@ -75,7 +75,7 @@ class UploadBackgroundViewController: UIViewController, UITextFieldDelegate {
     self.tableView.isHidden = false
     }
     func uploadImage(image : UIImage){
-        ImageUpload.shared.uploadImage(showLoader: true, image: image, mimeType: "image/jpeg", imageType: S3Bucket.kAWSUserPath) { (full, last, response, idx) in
+        ImageUpload.shared.uploadImage(showLoader: true, image: image.resizedTo1MB()!, mimeType: "image/jpeg", imageType: S3Bucket.kAWSUserPath) { (full, last, response, idx) in
             debugPrint(full as Any)
            // self.imageName = last
             userChosenData.backgroundImage = full!

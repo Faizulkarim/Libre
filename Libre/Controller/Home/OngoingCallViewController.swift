@@ -6,127 +6,135 @@
 //
 
 import UIKit
+import CallKit
 import AgoraRtcKit
 class OngoingCallViewController: UIViewController {
     @IBOutlet weak var backgorundView: UIView!
     @IBOutlet weak var muteButton: UIButton!
     @IBOutlet weak var spekerbutton: UIButton!
     @IBOutlet weak var callend: UIButton!
-    var agoraKit: AgoraRtcEngineKit?
+    @IBOutlet weak var time: UILabel!
+    @IBOutlet weak var name: UILabel!
+    @IBOutlet weak var ringStatus: UILabel!
     
+    var recipientId = ""
+    var recipientName = ""
     //MARK:- Memory Management Method
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     deinit {
         print("💥💥💥 OngoingCallViewController Deinit💥💥💥")
     }
     
     //------------------------------------------------------
     //MARK:- Custom Method
-    func initializeAgoraEngine() {
-           // Initializes AgoraRtcEngineKit
-        agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: AgroraCredintial.AgoraAppId.rawValue, delegate: self)
-        }
-    func joinChannel() {
-         // Replace demoChannel with the channel name that you use to generate the temporary token
-        agoraKit?.joinChannel(byToken: AgroraCredintial.AgoraToken.rawValue, channelId: "Faizul", info:nil, uid:0) {[unowned self] (sid, uid, elapsed) -> Void in
-             //UIApplication.shared.isIdleTimerDisabled = true
-            
-            print(sid)
-         }
-     }
-    
     func setupView(){
-    
+        
         self.backgorundView.applyGradient(colours: [UIColor.colorFromHex(hex: 0x53494C), UIColor.colorFromHex(hex: 0x110F0F)])
         self.muteButton.roundCorners(corners: .allCorners, radius: 27.5)
         self.spekerbutton.roundCorners(corners: .allCorners, radius: 27.5)
-        
-        self.callend.handleTapToAction {
-            self.agoraKit!.leaveChannel(nil)
-            AgoraRtcEngineKit.destroy()
+        self.time.isHidden = true
+        self.name.text = recipientName.capitalized
+        self.callend.handleTapToAction { [self] in
+            communicationManager.shared.leaveChannel()
+            if AppDelegate.shared.uid != nil {
+            endCall(call: AppDelegate.shared.uid!)
+            }
             self.pushToCallHistoryViewController()
         }
-   
-
+        
     }
 
-
     
+    func endCall(call: UUID) {
+        let controller = CXCallController()
+        let transaction = CXTransaction(action:
+        CXEndCallAction(call: call))
+        controller.request(transaction,completion: { error in })
+
+    }
     func pushToCallHistoryViewController(){
         let vc = CallHistoryViewController.instantiate(fromAppStoryboard: .kTabbarStoryboard)
-      
+        
         self.navigationController?.pushViewController(vc, animated: true)
     }
-        
-
-    
     
     //------------------------------------------------------
     //MARK:- Action method
-
-
-    
-    
-    //------------------------------------------------------
-    //MARK:- Life Cycle Method
-
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        setupView()
-        initializeAgoraEngine()
-        joinChannel()
-        
+    @IBAction func mute(_ sender: UIButton) {
+        if communicationManager.shared.mute(sender: spekerbutton) {
+            self.muteButton.backgroundColor = UIColor.ColorTheme
+        }else{
+            self.muteButton.backgroundColor = UIColor.white.withAlphaComponent(0.19)
+            
+        }
     }
     
+    @IBAction func loudSpeaker(_ sender: UIButton) {
+        if communicationManager.shared.loudSpeaker(sender: spekerbutton) {
+            self.spekerbutton.backgroundColor = UIColor.ColorTheme
+        }else{
+            self.spekerbutton.backgroundColor = UIColor.white.withAlphaComponent(0.19)
+            
+        }
+    }
+    //------------------------------------------------------
+    //MARK:- Life Cycle Method
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupView()
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.clearNavigation()
         self.navigationController?.navigationBar.isHidden = true
         self.hideTabBar()
+        if recipientId != ""{
+            makeAcall(recipientId: recipientId)
+        }
     }
-    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
-    
-    @IBAction func mute(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-        agoraKit!.muteLocalAudioStream(sender.isSelected)
-        if sender.isSelected {
-            self.muteButton.backgroundColor = UIColor.ColorTheme
-        }else{
-            self.muteButton.backgroundColor = UIColor.white.withAlphaComponent(0.19)
-           
-        }
-    }
-    
-    @IBAction func loudSpeaker(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-        self.agoraKit?.setEnableSpeakerphone(sender.isSelected)
-        if sender.isSelected {
-            self.spekerbutton.backgroundColor = UIColor.ColorTheme
-        }else{
-            self.spekerbutton.backgroundColor = UIColor.white.withAlphaComponent(0.19)
-           
-        }
-    }
-    
 }
-extension OngoingCallViewController: AgoraRtcEngineDelegate {
-    // This callback is triggered when a remote user joins the channel
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
+extension OngoingCallViewController {
+    private func makeAcall(recipientId: String) {
+        let params : [String : Any] = [
+            "userId": UserModel.currentUser?.userId as Any,
+            "recipientId" : recipientId,
+            "callType" : 1
+            // call type one is audio and two is video
+        ]
+        print(params)
+        ApiManager.shared.makeRequest(method:.user(.pushaCall), methodType: .post, parameter: params, withErrorAlert: true, withLoader: false, withdebugLog: true) { [self] (result) in
+            
+            switch result {
+            case .success(let apiData):
+                print(result)
+                switch apiData.apiCode {
+                case .success:
+                    let response = apiData.response
+                    // ATCallManager.shared.outgoingCall(from: "faizul", connectAfter: 2)
+                    self.ringStatus.text = "Ringing"
+                    communicationManager.shared.joinChannel(name: "faizul", token: AgroraCredintial.AgoraToken.rawValue)
+                    print(response)
+                default:
+                    print(apiData.message)
+                    GFunction.shared.showSnackBar(apiData.message)
+                }
+                
+            case .failure(let failedMsg):
+                print(failedMsg)
+                break
+            }
+        }
+    }
+}
 
-        print("This is other UID:\(uid)")
-    }
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didLeaveChannelWith stats: AgoraChannelStats) {
-        
-        print(stats)
-    }
+extension OngoingCallViewController : AgoraRtcEngineDelegate{
+    
 }
 

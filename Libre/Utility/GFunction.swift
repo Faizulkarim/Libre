@@ -217,6 +217,22 @@ class GFunction: NSObject, MFMessageComposeViewControllerDelegate {
         window.rootViewController = rootViewController
         window.makeKeyAndVisible()
     }
+    func setAudioCallScreen(){
+        let rootViewController : UINavigationController = UIStoryboard.kTabbarStoryboard.instantiateViewController(withIdentifier: kAudioCall) as! UINavigationController
+        
+        guard let window = GFunction.shared.getWindow() else { return }
+        
+        window.rootViewController = rootViewController
+        window.makeKeyAndVisible()
+    }
+    func setVideoCallScreen(){
+        let rootViewController : UINavigationController = UIStoryboard.kTabbarStoryboard.instantiateViewController(withIdentifier: kVideoCall) as! UINavigationController
+        
+        guard let window = GFunction.shared.getWindow() else { return }
+        
+        window.rootViewController = rootViewController
+        window.makeKeyAndVisible()
+    }
     
     func setLanguageScreen() {
         
@@ -233,8 +249,8 @@ class GFunction: NSObject, MFMessageComposeViewControllerDelegate {
     
     func userLogout(){
         UserModel.removeCurrentUser()
-//        AppDelegate.shared.isFirstTimeAppSelected = true
-//        self.setLoginScreen()
+        AppDelegate.shared.isFirstTimeAppSelected = true
+        self.setLoginScreen()
 
     }
     

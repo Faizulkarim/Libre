@@ -138,9 +138,9 @@ extension myPhotosViewController : UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0 {
                    ImagePickerManager().pickImage(self){ image in
-                       
+                       let uploadeImage = image.resizedTo1MB()
                     DispatchQueue.main.async { [self] in
-                        uploadImage(image: image)
+                        uploadImage(image: uploadeImage!)
                         self.myPhotoCollectionView.reloadData()
                       }
                 }

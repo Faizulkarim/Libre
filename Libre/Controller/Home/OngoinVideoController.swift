@@ -7,114 +7,238 @@
 
 import UIKit
 import AgoraRtcKit
-
+import Moya
+import CallKit
 class OngoinVideoController: UIViewController {
-
-    @IBOutlet weak var muteButton: ThemeButton!
-   // @IBOutlet weak var endButton: ThemeButton!
-    var agoraKit: AgoraRtcEngineKit?
+    
+    @IBOutlet weak var callStatus: UILabel!
+    @IBOutlet weak var callEndButton: UIButton!
+    @IBOutlet weak var videoMuteButton: UIButton!
+    @IBOutlet weak var remoteView: UIView!
+    @IBOutlet weak var muteButton: UIButton!
+    @IBOutlet weak var cameraSwitchButton: UIButton!
+    
+    // @IBOutlet weak var endButton: ThemeButton!
     var localView: UIView!
-    var remoteView: UIView!
+    var recipientId = ""
+    var recipientName = ""
+    let videoCanvas = AgoraRtcVideoCanvas()
+    var callManager: CallManager?
+    fileprivate let callObserver = CXCallObserver()
     override func viewDidLoad() {
         super.viewDidLoad()
         initView()
-        initializeAndJoinChannel()
-        //self.bottomView.layer.zPosition = 1
-        self.muteButton.layer.zPosition = 10
-      //  self.endButton.layer.zPosition = 10
-        // Do any additional setup after loading the view.
+        callObserver.setDelegate(self, queue: nil)
     }
     override func viewDidLayoutSubviews() {
-         super.viewDidLayoutSubviews()
-         remoteView.frame = self.view.bounds
-         localView.frame = CGRect(x: self.view.bounds.width - 90, y: 0, width: 90, height: 160)
-     }
+        super.viewDidLayoutSubviews()
+        localView.frame = CGRect(x: self.view.bounds.width - 90, y: 0, width: 140, height: 180)
+    }
     override func viewDidDisappear(_ animated: Bool) {
-           super.viewDidDisappear(animated)
-  
-     }
+        super.viewDidDisappear(animated)
+        
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.clearNavigation()
         self.navigationController?.navigationBar.isHidden = true
         self.hideTabBar()
+        if recipientId != ""{
+        makeAcall(recipientId: recipientId)
+        }
     }
-
+    
     func initView() {
-        remoteView = UIView()
-        self.view.addSubview(remoteView)
         localView = UIView()
         self.view.addSubview(localView)
+        self.muteButton.roundCorners(corners: .allCorners, radius: 25)
+        self.videoMuteButton.roundCorners(corners: .allCorners, radius: 25)
+        self.callEndButton.roundCorners(corners: .allCorners, radius: 25)
+        self.cameraSwitchButton.roundCorners(corners: .allCorners, radius: 25)
+       /// communicationManager.shared.enableVideo(localView: localView)
+        communicationManager.shared.enableVideo(localView: localView)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.receiveData(_:)), name: NSNotification.Name(rawValue: "uid"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.status(_:)), name: NSNotification.Name(rawValue: "status"), object: nil)
     }
+    @objc func receiveData(_ notification: NSNotification) {
+        if let uid = notification.userInfo?["uid"] as? UInt {
+          //  communicationManager.shared.enableVideo(localView: localView)
+            videoCanvas.uid = uid
+            videoCanvas.renderMode = .hidden
+            videoCanvas.view = remoteView
+            communicationManager.shared.agoraKit?.setupRemoteVideo(videoCanvas)
+            self.callStatus.text = "Connected"
+            
+        }
+        
+    }
+    @objc func status(_ notification: NSNotification) {
+        if let status = notification.userInfo?["status"] as? Int {
+            switch status {
+            case 1:
+                print("rejecte")
+                // rejected
+                self.callStatus.text = "Rejected"
+                communicationManager.shared.leaveChannel()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                    self.navigationController?.popViewController(animated: true)
+                }
+               
+            case 2:
+                //anserd
+                self.callStatus.text = "Connected"
+                
+            case 3:
+                self.callStatus.text = "on mute"
+                //muted
+                print("mute")
+            case 4 :
+               //ended
+                communicationManager.shared.leaveChannel()
+               
+                if AppDelegate.shared.uid != nil{
+                    endCall(call: AppDelegate.shared.uid!)
+                }
+                self.pushToCallHistoryViewController()
+                print("ended")
+            default:
+                break
+            }
+        }
+        
+    }
+    func endCall(call: UUID) {
+        let controller = CXCallController()
+        let transaction = CXTransaction(action:
+        CXEndCallAction(call: call))
+        controller.request(transaction,completion: { error in })
+
+    }
+    
     func pushToCallHistoryViewController(){
         let vc = CallHistoryViewController.instantiate(fromAppStoryboard: .kTabbarStoryboard)
-      
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func initializeAndJoinChannel() {
-      // Pass in your App ID here
-      agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: AgroraCredintial.AgoraAppId.rawValue, delegate: self)
-      // Video is disabled by default. You need to call enableVideo to start a video stream.
-      agoraKit?.enableVideo()
-           // Create a videoCanvas to render the local video
-           let videoCanvas = AgoraRtcVideoCanvas()
-           videoCanvas.uid = 0
-           videoCanvas.renderMode = .hidden
-           videoCanvas.view = localView
-           agoraKit?.setupLocalVideo(videoCanvas)
-
-      // Join the channel with a token. Pass in your token and channel name here
-        agoraKit?.setDefaultAudioRouteToSpeakerphone(true)
-      agoraKit?.joinChannel(byToken: AgroraCredintial.AgoraToken.rawValue, channelId: "Faizul", info: nil, uid: 0, joinSuccess: { (channel, uid, elapsed) in
-          
-          print("Channel:\(channel), UID: \(uid)")
-           })
-       }
-    
-   
     
     @IBAction func end(_ sender: Any) {
-        agoraKit?.leaveChannel(nil)
-        AgoraRtcEngineKit.destroy()
-        pushToCallHistoryViewController()
+       // self.APIcallStatucChange(status: callId!)
+        communicationManager.shared.leaveChannel()
+        if AppDelegate.shared.uid != nil {
+          endCall(call: AppDelegate.shared.uid!)
+        }
+
+       
     }
     
     @IBAction func mute(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-        agoraKit!.muteLocalAudioStream(sender.isSelected)
-        if sender.isSelected {
+        if communicationManager.shared.mute(sender: muteButton) {
             self.muteButton.backgroundColor = UIColor.ColorTheme
         }else{
-            self.muteButton.backgroundColor = UIColor.white.withAlphaComponent(0.19)
-           
+            self.muteButton.backgroundColor = UIColor.clear
         }
     }
     
     @IBAction func switchCamera(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
-        agoraKit?.switchCamera()
+        communicationManager.shared.switchCamera()
+        if sender.isSelected {
+            self.cameraSwitchButton.backgroundColor = UIColor.ColorTheme
+        }else{
+            self.cameraSwitchButton.backgroundColor = UIColor.clear
+        }
     }
     
-
+    @IBAction func videoMute(_ sender: Any) {
+        if communicationManager.shared.muteVideo(sender: videoMuteButton) {
+            self.videoMuteButton.backgroundColor = UIColor.ColorTheme
+        }else{
+            self.videoMuteButton.backgroundColor = UIColor.clear
+        }
+    }
+    
 }
-extension OngoinVideoController: AgoraRtcEngineDelegate {
-    // This callback is triggered when a remote user joins the channel
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
-        print(uid)
-        let videoCanvas = AgoraRtcVideoCanvas()
-        videoCanvas.uid = uid
-        videoCanvas.renderMode = .hidden
-        videoCanvas.view = remoteView
-        agoraKit?.setupRemoteVideo(videoCanvas)
+
+
+extension OngoinVideoController {
+
+    private func makeAcall(recipientId: String) {
+        
+        let params : [String : Any] = [
+            "userId": UserModel.currentUser?.userId as Any,
+            "recipientId" : recipientId,
+            "callType" : 2
+            
+        ]
+        print(params)
+        
+        ApiManager.shared.makeRequest(method:.user(.pushaCall), methodType: .post, parameter: params, withErrorAlert: true, withLoader: false, withdebugLog: true) { (result) in
+            
+            switch result {
+            case .success(let apiData):
+                print(result)
+                switch apiData.apiCode {
+                case .success:
+                    let response = apiData.response
+                    if let callid = response["callId"].int{
+                        myCallId.callId = callid
+                        self.callManager?.startCall(handle: "faizul", videoEnabled: true)
+                        communicationManager.shared.joinChannel(name: "faizul", token: AgroraCredintial.AgoraToken.rawValue)
+                    }
+                    print(response)
+                
+                default:
+                    GFunction.shared.showSnackBar(apiData.message)
+                }
+                
+            case .failure(let failedMsg):
+                print(failedMsg)
+                break
+            }
+        }
     }
-    internal func rtcEngine(_ engine: AgoraRtcEngineKit, didOfflineOfUid uid:UInt, reason:AgoraUserOfflineReason) {
-    self.remoteView.isHidden = true
-    }
-    func rtcEngine(_ engine: AgoraRtcEngineKit, didVideoMuted muted:Bool, byUid:UInt) {
-        remoteView.isHidden = muted
-      
-    }
-    
+}
+extension OngoinVideoController : CXCallObserverDelegate {
+    func callObserver(_ callObserver: CXCallObserver, callChanged call: CXCall) {
+
+        if call.hasConnected {
+            print("Call Connect -> \(call.uuid)")
+            GlobalAPI.shared.APICallStatusChange(status: 2) { success in
+                
+                if success{
+                    print(success)
+                    self.callStatus.text = "Connected"
+                }
+            }
+        }
+
+        if call.isOutgoing {
+            print("Call outGoing \(call.uuid)")
+            self.callStatus.text = "calling"
+        }
+
+        if call.hasEnded {
+            print("Call hasEnded \(call.uuid)")
+            GlobalAPI.shared.APICallStatusChange(status: 4) { success in
+                
+                if success{
+                    print(success)
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
+          
+        }
+
+        if call.isOnHold {
+            print("Call onHold \(call.uuid)")
+            GlobalAPI.shared.APICallStatusChange(status: 3) { success in
+                
+                if success{
+                    print(success)
+                    self.callStatus.text = "Mute"
+                }
+            }
+          }
+      }
 }
 

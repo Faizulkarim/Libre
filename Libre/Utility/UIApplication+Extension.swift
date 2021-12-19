@@ -17,7 +17,8 @@ extension UIApplication {
      
      
      */
-    class func topViewController(controller: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+
+    class func topViewController(controller: UIViewController? = UIWindow.key?.rootViewController) -> UIViewController? {
         
         if let navigationController = controller as? UINavigationController {
             return topViewController(controller: navigationController.visibleViewController)
@@ -42,14 +43,14 @@ extension UIApplication {
                                    duration: TimeInterval = 0.5,
                                    completion: (() -> Void)? = nil) {
         guard animated else {
-            UIApplication.shared.keyWindow?.rootViewController = viewController
+            UIWindow.key?.rootViewController = viewController
             return
         }
         
-        UIView.transition(with: UIApplication.shared.keyWindow!, duration: duration, options: options, animations: {
+        UIView.transition(with: UIWindow.key!, duration: duration, options: options, animations: {
             let oldState = UIView.areAnimationsEnabled
             UIView.setAnimationsEnabled(false)
-            UIApplication.shared.keyWindow?.rootViewController = viewController
+            UIWindow.key?.rootViewController = viewController
             UIView.setAnimationsEnabled(oldState)
         }) { _ in
             completion?()
@@ -70,5 +71,14 @@ extension UIApplication {
             }
         }
         return UIEdgeInsets.zero
+    }
+}
+extension UIWindow {
+    static var key: UIWindow? {
+        if #available(iOS 13, *) {
+            return UIApplication.shared.windows.first { $0.isKeyWindow }
+        } else {
+            return UIApplication.shared.keyWindow
+        }
     }
 }

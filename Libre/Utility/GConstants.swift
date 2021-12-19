@@ -12,6 +12,8 @@ let kAppName                                     = "Libre"
 let kTHEMECOLOR                                  =  UIColor.ColorTheme
 let kTABNAV                                      = "navTabbar"
 let kAUTHNAV                                     = "AuthanticationNav"
+let kAudioCall                                   = "navAudioCall"
+let kVideoCall                                   = "navVideoCall"
 let kLANGNAV                                     = "LanguageNav"
 
 
@@ -34,7 +36,6 @@ var kWindow: UIWindow {
 var kSettings                                   =  "Settings"
 
 var xCenter                                     = 0
-var SendBirdApikey = "20F9287C-FCC4-4BEB-AC0A-DC2E33ABE40C"
 
 //MARK: - For getting Aspect Ration of screen
 var kFontAspectRatio : CGFloat {

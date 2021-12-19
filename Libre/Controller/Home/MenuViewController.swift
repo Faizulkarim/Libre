@@ -164,7 +164,6 @@ extension MenuViewController {
                switch apiData.apiCode {
                case .success:
                 GFunction.shared.userLogout()
-                self.PushToLoginView()
                    print(apiData)
                default:
                    GFunction.shared.showSnackBar(apiData.message)

@@ -95,6 +95,10 @@ class TutorialViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
           setupView()
+        if UserDefaults.standard.value(forKey: isWalkthrough) as? Int == 1{
+            GFunction.shared.manageRootController()
+        }
+        
         
     }
     

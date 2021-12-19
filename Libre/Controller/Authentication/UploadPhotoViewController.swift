@@ -44,7 +44,7 @@ class UploadPhotoViewController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     func uploadImage(){
-        ImageUpload.shared.uploadImage(showLoader: true, image: self.imgBg.image!, mimeType: "image/jpeg", imageType: S3Bucket.kAWSUserPath) { (full, last, response, idx) in
+        ImageUpload.shared.uploadImage(showLoader: true, image: self.imgBg.image!.resizedTo1MB()!, mimeType: "image/jpeg", imageType: S3Bucket.kAWSUserPath) { (full, last, response, idx) in
             debugPrint(full as Any)
             GFunction.shared.removeLoader()
            // self.imageName = last
